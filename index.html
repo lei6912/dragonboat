@@ -8,358 +8,432 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Ma+Shan+Zheng&display=swap');
 
 :root {
-  --gold: #f0a500;
-  --gold2: #ffd166;
-  --red: #c0392b;
-  --red2: #e74c3c;
-  --green: #27ae60;
-  --bg: #0b1a2e;
-  --bg2: #0f2540;
-  --panel: rgba(255,255,255,0.05);
-  --border: rgba(240,165,0,0.25);
-  --text: #f0e6d0;
-  --muted: rgba(240,230,208,0.5);
+  --red:      #c0392b;
+  --red-l:    #e74c3c;
+  --red-bg:   #fff0ef;
+  --gold:     #b5800a;
+  --gold-l:   #e6a817;
+  --gold-bg:  #fffbf0;
+  --ink:      #1a1008;
+  --ink-m:    #5a4a30;
+  --ink-l:    #9a8a6a;
+  --paper:    #fdf8f2;
+  --paper2:   #f5ede0;
+  --green:    #2d6a4f;
+  --green-l:  #40916c;
+  --green-bg: #edf7f2;
+  --border:   rgba(180,120,40,0.18);
+  --shadow:   0 2px 16px rgba(90,60,20,0.09);
+  --shadow-l: 0 4px 28px rgba(90,60,20,0.14);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--ink);
   font-family: 'Noto Serif TC', serif;
   min-height: 100vh;
   overflow-x: hidden;
+  /* subtle paper texture */
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(240,165,0,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(41,128,185,0.1) 0%, transparent 60%);
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
 }
 
-/* WAVES */
-.wave-svg {
-  position: fixed; left: 0; right: 0; pointer-events: none; z-index: 0;
+/* ── CHINESE PATTERN BORDERS ── */
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; height: 6px;
+  background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 12px, var(--gold-l) 12px, var(--gold-l) 24px, #fff 24px, #fff 28px);
+  z-index: 100;
 }
-.wave-svg.top { top: 0; }
-.wave-svg.bottom { bottom: 0; transform: scaleY(-1); }
-
-/* PARTICLES */
-.particle {
-  position: fixed; pointer-events: none; z-index: 0;
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--gold);
-  animation: floatUp linear infinite;
-  opacity: 0;
-}
-@keyframes floatUp {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.2; }
-  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+body::after {
+  content: '';
+  position: fixed; bottom: 0; left: 0; right: 0; height: 6px;
+  background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 12px, var(--gold-l) 12px, var(--gold-l) 24px, #fff 24px, #fff 28px);
+  z-index: 100;
 }
 
-/* HEADER */
+/* ── SIDE DECO ── */
+.side-deco {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  width: 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  pointer-events: none; z-index: 0; opacity: 0.18;
+}
+.side-deco.left { left: 8px; }
+.side-deco.right { right: 8px; }
+.side-deco span { font-size: 1.1rem; writing-mode: vertical-rl; color: var(--red); }
+
+/* ── HEADER ── */
 header {
-  position: relative; z-index: 2;
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  padding: 28px 20px 20px;
   text-align: center;
-  padding: 32px 20px 20px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(240,165,0,0.06) 0%, transparent 100%);
-}
-.team-tabs {
-  display: flex; gap: 10px; justify-content: center; margin-bottom: 18px;
-}
-.team-btn {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  border-radius: 30px;
-  padding: 8px 22px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  letter-spacing: 0.05em;
-}
-.team-btn:hover { border-color: var(--gold); color: var(--gold2); }
-.team-btn.active {
-  background: linear-gradient(135deg, rgba(240,165,0,0.2), rgba(192,57,43,0.15));
-  border-color: var(--gold);
-  color: var(--gold);
-  box-shadow: 0 0 20px rgba(240,165,0,0.15);
-}
-h1 {
-  font-family: 'Ma Shan Zheng', cursive;
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
-  color: var(--gold);
-  text-shadow: 0 0 40px rgba(240,165,0,0.4);
-  letter-spacing: 0.08em;
-}
-.subtitle { font-size: 0.8rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.1em; }
-
-/* MAIN AREA */
-main {
-  position: relative; z-index: 2;
-  max-width: 680px; margin: 0 auto;
-  padding: 28px 16px 80px;
-}
-
-/* BREADCRUMB */
-.breadcrumb {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  margin-bottom: 20px;
-  min-height: 28px;
-}
-.crumb {
-  font-size: 0.72rem;
-  color: var(--muted);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 3px 10px;
-  white-space: nowrap;
-}
-.crumb.current { color: var(--gold); border-color: rgba(240,165,0,0.4); }
-.crumb-arrow { color: var(--muted); font-size: 0.7rem; }
-
-/* MATCH CARD */
-.match-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px 22px;
-  margin-bottom: 18px;
-  backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
-  animation: slideIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
 }
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.match-card::before {
+/* cloud pattern behind header */
+header::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--red));
-}
-.match-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.72rem; color: var(--muted);
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px; padding: 3px 10px;
-  margin-bottom: 10px;
-  letter-spacing: 0.08em;
-}
-.match-datetime {
-  display: flex; align-items: baseline; gap: 12px;
-  margin-bottom: 6px;
-}
-.match-date { font-size: 1rem; color: var(--muted); }
-.match-time {
-  font-size: 2.2rem; font-weight: 900;
-  color: var(--gold);
-  text-shadow: 0 0 20px rgba(240,165,0,0.3);
-  line-height: 1;
-}
-.match-num {
-  font-size: 1rem; color: var(--text);
-  margin-bottom: 4px;
-}
-.match-note {
-  font-size: 0.78rem; color: var(--muted);
-  line-height: 1.6;
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse 120px 60px at 10% 60%, rgba(192,57,43,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 100px 50px at 90% 40%, rgba(181,128,10,0.06) 0%, transparent 100%);
+  pointer-events: none;
 }
 
-/* START BADGE */
-.badge-start {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--green), #1e8449);
+.header-ornament {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 10px;
+}
+.ornament-line {
+  height: 1px; flex: 1; max-width: 100px;
+  background: linear-gradient(90deg, transparent, var(--gold-l), transparent);
+}
+.ornament-diamond {
+  width: 8px; height: 8px;
+  background: var(--red);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+h1 {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: clamp(1.7rem, 5vw, 2.8rem);
+  color: var(--red);
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  position: relative;
+}
+.h1-sub {
+  font-size: 0.72rem;
+  color: var(--ink-l);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+
+/* ── TEAM TABS ── */
+.team-tabs {
+  display: flex; gap: 10px; justify-content: center;
+  margin-top: 18px;
+}
+.team-btn {
+  background: var(--paper2);
+  border: 1.5px solid var(--border);
+  color: var(--ink-m);
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.22s;
+  letter-spacing: 0.04em;
+  position: relative;
+  overflow: hidden;
+}
+.team-btn::after {
+  content: '';
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--red);
+  transition: width 0.22s;
+}
+.team-btn:hover { background: #fff; color: var(--red); border-color: var(--red); }
+.team-btn.active {
+  background: var(--red);
+  border-color: var(--red);
   color: #fff;
-  border-radius: 8px;
-  padding: 3px 12px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
+  box-shadow: 0 2px 12px rgba(192,57,43,0.22);
 }
-.badge-final {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--gold), #c87000);
-  color: var(--bg);
-  border-radius: 8px;
-  padding: 3px 12px;
-  font-size: 0.72rem;
-  font-weight: 900;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
+.team-btn.active::after { width: 0; }
+
+/* ── MAIN ── */
+main {
+  max-width: 600px; margin: 0 auto;
+  padding: 28px 16px 80px;
+  position: relative; z-index: 1;
 }
-.badge-repechage {
-  display: inline-block;
-  background: rgba(231,76,60,0.2);
-  border: 1px solid rgba(231,76,60,0.4);
-  color: #e74c3c;
-  border-radius: 8px;
-  padding: 3px 12px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 5px;
+  margin-bottom: 20px; min-height: 24px;
 }
+.crumb {
+  font-size: 0.7rem; color: var(--ink-l);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+}
+.crumb.current { color: var(--red); border-color: rgba(192,57,43,0.3); background: var(--red-bg); }
+.crumb-arrow { color: var(--ink-l); font-size: 0.65rem; }
+
+/* ── MATCH CARD ── */
+.match-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeUp 0.35s cubic-bezier(0.4,0,0.2,1) both;
+  position: relative;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* red left accent bar */
+.match-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; bottom: 0; width: 5px;
+  background: var(--red);
+}
+.match-card.repechage::before { background: linear-gradient(180deg, var(--red), var(--gold-l)); }
+.match-card.start-style::before { background: var(--green-l); }
+.match-card.final-style::before { background: linear-gradient(180deg, var(--gold-l), var(--red)); }
+
+.card-inner { padding: 20px 20px 18px 22px; }
+
+.card-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.card-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 3px;
+  padding: 3px 9px;
+}
+.badge-start  { background: var(--green-bg); color: var(--green); border: 1px solid rgba(45,106,79,0.2); }
+.badge-rep    { background: #fff5f0; color: #c0392b; border: 1px solid rgba(192,57,43,0.25); }
+.badge-normal { background: var(--gold-bg); color: var(--gold); border: 1px solid rgba(181,128,10,0.2); }
+.badge-final  { background: var(--gold-bg); color: var(--gold); border: 1px solid rgba(181,128,10,0.35); }
+
+.card-num-label { font-size: 0.72rem; color: var(--ink-l); letter-spacing: 0.08em; }
+
+.card-datetime {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 4px;
+}
+.card-date { font-size: 0.9rem; color: var(--ink-m); }
+.card-time {
+  font-size: 2rem; font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.card-num { font-size: 0.82rem; color: var(--ink-m); margin-bottom: 6px; font-weight: 600; }
+.card-note { font-size: 0.78rem; color: var(--ink-l); line-height: 1.6; }
+
+/* chinese cloud decoration in card */
+.card-cloud {
+  position: absolute; right: 14px; bottom: 10px;
+  opacity: 0.06; font-size: 3.5rem; line-height: 1;
+  pointer-events: none; user-select: none;
+  color: var(--red);
+}
+
 .warning-box {
-  background: rgba(192,57,43,0.12);
-  border: 1px solid rgba(192,57,43,0.35);
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 0.8rem;
-  color: #e08070;
-  margin-top: 14px;
-  display: flex; gap: 8px; align-items: flex-start;
+  margin: 12px 0 0;
+  background: #fff5f0;
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 5px;
+  padding: 9px 12px;
+  font-size: 0.76rem;
+  color: var(--red-l);
+  display: flex; gap: 7px;
   line-height: 1.5;
 }
 
-/* QUESTION */
+/* ── QUESTION ── */
 .question {
-  font-size: 1rem; font-weight: 700;
-  color: var(--text);
-  margin: 18px 0 12px;
-  letter-spacing: 0.03em;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.92rem; font-weight: 700;
+  color: var(--ink);
+  margin: 16px 0 10px;
+  letter-spacing: 0.02em;
 }
+.question::before, .question::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+.question::after { background: linear-gradient(270deg, var(--border), transparent); }
 
-/* CHOICE BUTTONS */
-.choices { display: flex; flex-direction: column; gap: 10px; }
+/* ── CHOICES ── */
+.choices { display: flex; flex-direction: column; gap: 8px; }
+
 .choice-btn {
   display: flex; align-items: center; gap: 14px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 18px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 13px 16px;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.2s;
   text-align: left;
   font-family: 'Noto Serif TC', serif;
-  color: var(--text);
+  color: var(--ink);
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(90,60,20,0.05);
 }
-.choice-btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(240,165,0,0.08) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s;
+.choice-btn:hover:not(.rank-elim) {
+  border-color: var(--red);
+  box-shadow: 0 2px 14px rgba(192,57,43,0.12);
+  transform: translateX(3px);
 }
-.choice-btn:hover::after { opacity: 1; }
-.choice-btn:hover { border-color: rgba(240,165,0,0.5); transform: translateX(4px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-
-.choice-btn.rank-1:hover { border-color: rgba(240,165,0,0.7); }
-.choice-btn.rank-2:hover { border-color: rgba(192,192,192,0.6); }
-.choice-btn.rank-3:hover { border-color: rgba(205,127,50,0.6); }
-.choice-btn.rank-4:hover { border-color: rgba(231,76,60,0.6); }
-.choice-btn.rank-elim { opacity: 0.5; cursor: not-allowed; }
-.choice-btn.rank-elim:hover { transform: none; border-color: var(--border); }
+.choice-btn.rank-elim {
+  opacity: 0.45; cursor: not-allowed;
+  background: var(--paper2);
+}
+.choice-btn.rank-elim:hover { transform: none; border-color: var(--border); box-shadow: none; }
 
 .rank-icon {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem; font-weight: 900;
+  font-size: 1rem; font-weight: 900;
   flex-shrink: 0;
+  font-family: 'Noto Serif TC', serif;
 }
-.icon-1 { background: linear-gradient(135deg, #f0a500, #ffd166); color: var(--bg); }
-.icon-2 { background: linear-gradient(135deg, #bdc3c7, #95a5a6); color: var(--bg); }
-.icon-3 { background: linear-gradient(135deg, #cd7f32, #a04000); color: #fff; }
-.icon-4 { background: linear-gradient(135deg, #c0392b, #922b21); color: #fff; }
-.icon-x { background: rgba(50,50,50,0.5); color: #555; }
+.icon-1 { background: var(--gold-l); color: #fff; }
+.icon-2 { background: #b0b8c1; color: #fff; }
+.icon-3 { background: #cd7f32; color: #fff; }
+.icon-4 { background: var(--red); color: #fff; }
+.icon-x { background: #ddd; color: #999; }
 
 .choice-info { flex: 1; }
-.choice-rank { font-size: 0.95rem; font-weight: 700; }
-.choice-next { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-.choice-arrow { color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+.choice-rank { font-size: 0.92rem; font-weight: 700; color: var(--ink); }
+.choice-next { font-size: 0.72rem; color: var(--ink-l); margin-top: 2px; }
+.choice-arrow { color: var(--ink-l); font-size: 0.9rem; flex-shrink: 0; transition: transform 0.2s; }
+.choice-btn:hover:not(.rank-elim) .choice-arrow { color: var(--red); transform: translateX(2px); }
 
-/* ELIMINATED */
-.eliminated-card {
-  background: rgba(192,57,43,0.08);
-  border: 1px solid rgba(192,57,43,0.3);
-  border-radius: 16px;
-  padding: 32px 22px;
+/* ── SPECIAL SCREENS ── */
+.elim-card, .final-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 36px 24px;
   text-align: center;
-  animation: slideIn 0.4s ease both;
+  box-shadow: var(--shadow-l);
+  animation: fadeUp 0.35s ease both;
+  position: relative; overflow: hidden;
 }
-.elim-icon { font-size: 3rem; margin-bottom: 12px; }
-.elim-title { font-family: 'Ma Shan Zheng', cursive; font-size: 1.8rem; color: #e74c3c; margin-bottom: 8px; }
-.elim-text { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.elim-card { border-color: rgba(192,57,43,0.25); }
+.final-card { border-color: rgba(181,128,10,0.4); }
 
-/* FINAL CARD */
-.final-celebration {
-  background: linear-gradient(135deg, rgba(240,165,0,0.12), rgba(192,57,43,0.1));
-  border: 1px solid rgba(240,165,0,0.5);
-  border-radius: 16px;
-  padding: 32px 22px;
-  text-align: center;
-  animation: slideIn 0.4s ease both;
-  box-shadow: 0 0 40px rgba(240,165,0,0.1);
+.elim-card::before { background: var(--red); }
+.final-card::before { background: linear-gradient(180deg, var(--gold-l), var(--red)); }
+.elim-card::before, .final-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
 }
-.final-icon { font-size: 3rem; margin-bottom: 12px; animation: pulse 1s ease infinite alternate; }
-@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-.final-title { font-family: 'Ma Shan Zheng', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 8px; text-shadow: 0 0 20px rgba(240,165,0,0.5); }
 
-/* RESET BTN */
-.reset-btn {
-  display: block; margin: 20px auto 0;
-  background: var(--panel);
+.screen-icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+.screen-title {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.9rem;
+  margin-bottom: 8px;
+}
+.elim-card .screen-title { color: var(--red); }
+.final-card .screen-title { color: var(--gold); }
+.screen-text { font-size: 0.82rem; color: var(--ink-l); line-height: 1.8; }
+
+/* chinese knot / window pattern decoration */
+.window-pattern {
+  position: absolute; right: 14px; bottom: 10px;
+  opacity: 0.05; font-size: 4rem;
+  pointer-events: none; color: var(--red);
+}
+
+/* ── HISTORY ── */
+.history-section { margin-top: 22px; }
+.history-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.72rem; color: var(--ink-l);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.history-head::before, .history-head::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--border);
+}
+.history-list { display: flex; flex-direction: column; gap: 5px; }
+.history-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--paper2);
   border: 1px solid var(--border);
-  color: var(--muted);
-  border-radius: 10px;
-  padding: 10px 28px;
+  border-radius: 5px;
+  padding: 7px 12px;
+  font-size: 0.76rem;
+}
+.history-rank { font-size: 0.9rem; width: 20px; text-align: center; }
+.history-info { flex: 1; color: var(--ink-m); }
+.history-match { font-weight: 700; color: var(--ink); margin-right: 5px; }
+
+/* ── RESET ── */
+.reset-btn {
+  display: block; margin: 18px auto 0;
+  background: var(--paper2);
+  border: 1.5px solid var(--border);
+  color: var(--ink-m);
+  border-radius: 5px;
+  padding: 9px 26px;
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all 0.2s;
   letter-spacing: 0.05em;
 }
-.reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+.reset-btn:hover { background: #fff; border-color: var(--red); color: var(--red); }
 
-/* HISTORY */
-.history-section { margin-top: 24px; }
-.history-title {
-  font-size: 0.75rem; color: var(--muted);
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
+/* ── DIVIDER SVG ── */
+.chinese-divider {
+  display: flex; align-items: center; justify-content: center;
+  margin: 4px 0 8px;
+  gap: 6px;
+  opacity: 0.3;
 }
-.history-list { display: flex; flex-direction: column; gap: 6px; }
-.history-item {
-  display: flex; align-items: center; gap: 10px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 0.78rem;
-}
-.history-rank { font-size: 0.85rem; }
-.history-info { flex: 1; color: var(--muted); }
-.history-match { color: var(--text); font-weight: 600; margin-right: 6px; }
+.chinese-divider .d-line { flex: 1; height: 1px; background: var(--gold-l); }
+.chinese-divider .d-sym { font-size: 0.85rem; color: var(--red); }
 
-/* SCROLLBAR */
+/* scrollbar */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(240,165,0,0.2); border-radius: 2px; }
+::-webkit-scrollbar-track { background: var(--paper2); }
+::-webkit-scrollbar-thumb { background: rgba(181,128,10,0.3); border-radius: 2px; }
 </style>
 </head>
 <body>
 
-<svg class="wave-svg top" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="60">
-  <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,0 L0,0Z" fill="rgba(41,128,185,0.08)"/>
-</svg>
-<svg class="wave-svg bottom" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="60">
-  <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,0 L0,0Z" fill="rgba(41,128,185,0.08)"/>
-</svg>
+<!-- side decos -->
+<div class="side-deco left"><span>龍</span><span>舟</span><span>競</span><span>賽</span></div>
+<div class="side-deco right"><span>奮</span><span>力</span><span>划</span><span>行</span></div>
 
 <header>
-  <div class="team-tabs">
-    <button class="team-btn active" id="btn-long" onclick="selectTeam('long')">🐉 龍龍龘龘</button>
-    <button class="team-btn" id="btn-guard" onclick="selectTeam('guard')">⚓ 寓友監護人</button>
+  <div class="header-ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <!-- SVG cloud ruyi pattern -->
+    <svg width="40" height="18" viewBox="0 0 40 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.35">
+      <path d="M2 14 Q6 4 12 10 Q16 14 20 8 Q24 2 28 10 Q32 16 38 8" stroke="#c0392b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line"></div>
   </div>
-  <h1>🥁 龍舟賽程引導 🥁</h1>
-  <div class="subtitle">比完一場 → 選擇名次 → 自動引導下一場</div>
+
+  <h1>🐉 龍舟賽程引導 🥁</h1>
+  <div class="h1-sub">端午競舟 · 比完一場選名次 · 自動引導下一場</div>
+
+  <div class="team-tabs">
+    <button class="team-btn active" id="btn-long"  onclick="selectTeam('long')">龍龖龘</button>
+    <button class="team-btn"        id="btn-guard" onclick="selectTeam('guard')">⚓ 寓友監護人</button>
+  </div>
 </header>
 
 <main>
@@ -368,624 +442,552 @@ main {
 </main>
 
 <script>
-// ============================================================
-//  MATCH DATA
-//  每個節點: { id, date, time, num, label, note, isStart, isFinal, isRepechage, warn }
-//  choices: { rank, label, next, isElim }
-//  isRepechage = 敗部復活賽（再輸=淘汰）
-// ============================================================
-
+/* =========================================================
+   DATA — 每個節點: date / time / num / label / note
+          choices: rank / label / next / isElim / icon
+   ========================================================= */
 const TEAMS = {
   long: {
-    name: '龍龍龘龘',
+    name: '龍龖龘',
     start: 'L_S1',
     nodes: {
-
-      // ── 起點 ──
       'L_S1': {
         date:'6/19', time:'13:24', num:'第4場', label:'起點場次',
-        note:'龍龍龘龘 出賽開始！', isStart: true,
-        choices: [
-          { rank:1, label:'第一名', next:'L_WIN_14', icon:'1' },
-          { rank:2, label:'第二名', next:'L_WIN_14', icon:'2' },
-          { rank:3, label:'第三名', next:'L_R3_22',  icon:'3' },
-          { rank:4, label:'第四名', next:'L_R4_19',  icon:'4' },
+        note:'龍龖龘 出賽開始！加油！', isStart:true,
+        choices:[
+          {rank:1, label:'第一名', next:'L_WIN_14', icon:'1'},
+          {rank:2, label:'第二名', next:'L_WIN_14', icon:'2'},
+          {rank:3, label:'第三名', next:'L_R3_22',  icon:'3'},
+          {rank:4, label:'第四名', next:'L_R4_22',  icon:'4'},
         ]
       },
-
-      // ── 主路線（前兩名走這條）──
       'L_WIN_14': {
         date:'6/19', time:'17:16', num:'第14場', label:'主路線',
-        note:'晉級！繼續加油 🎉',
-        choices: [
-          { rank:1, label:'第一名', next:'L_WIN_32', icon:'1' },
-          { rank:2, label:'第二名', next:'L_WIN_32', icon:'2' },
-          { rank:3, label:'第三名', next:'L_MR3_27', icon:'3' },
-          { rank:4, label:'第四名', next:'L_MR4_28', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'L_WIN_32',  icon:'1'},
+          {rank:2, label:'第二名', next:'L_WIN_32',  icon:'2'},
+          {rank:3, label:'第三名', next:'L_MR3_27',  icon:'3'},
+          {rank:4, label:'第四名', next:'L_MR4_28',  icon:'4'},
         ]
       },
       'L_WIN_32': {
         date:'6/20', time:'17:32', num:'第32場', label:'主路線',
-        note:'持續晉級中！',
-        choices: [
-          { rank:1, label:'第一名', next:'L_WIN_43', icon:'1' },
-          { rank:2, label:'第二名', next:'L_WIN_43', icon:'2' },
-          { rank:3, label:'第三名', next:'L_MR3_37B', icon:'3' },
-          { rank:4, label:'第四名', next:'L_MR4_37B', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'L_WIN_43',  icon:'1'},
+          {rank:2, label:'第二名', next:'L_WIN_43',  icon:'2'},
+          {rank:3, label:'第三名', next:'L_MR3B_25', icon:'3'},
+          {rank:4, label:'第四名', next:'L_MR4B_25', icon:'4'},
         ]
       },
       'L_WIN_43': {
         date:'6/21', time:'13:32', num:'第43場', label:'主路線',
-        note:'邁向決賽！',
-        choices: [
-          { rank:1, label:'第一名', next:'L_WIN_49', icon:'1' },
-          { rank:2, label:'第二名', next:'L_WIN_49', icon:'2' },
-          { rank:3, label:'第三名', next:'L_SEMI_46A', icon:'3' },
-          { rank:4, label:'第四名', next:'L_SEMI_46A', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'L_WIN_49',   icon:'1'},
+          {rank:2, label:'第二名', next:'L_WIN_49',   icon:'2'},
+          {rank:3, label:'第三名', next:'L_SEMI_46A', icon:'3'},
+          {rank:4, label:'第四名', next:'L_SEMI_46A', icon:'4'},
         ]
       },
       'L_WIN_49': {
         date:'6/21', time:'17:24', num:'第49場', label:'準決賽',
-        note:'最後一步！衝向決賽！',
-        choices: [
-          { rank:1, label:'第一名', next:'L_FINAL', icon:'1' },
-          { rank:2, label:'第二名', next:'L_FINAL', icon:'2' },
-          { rank:3, label:'第三名', next:'L_SEMI_51A', icon:'3' },
-          { rank:4, label:'第四名', next:'L_SEMI_51A', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'L_FINAL',   icon:'1'},
+          {rank:2, label:'第二名', next:'L_FINAL',   icon:'2'},
+          {rank:3, label:'第三名', next:'L_SEMI_51', icon:'3'},
+          {rank:4, label:'第四名', next:'L_SEMI_51', icon:'4'},
         ]
       },
-
-      // ── ③ 路線 A：第4場→第三名 → 22場 ──
+      // ③ A：第4場→3
       'L_R3_22': {
         date:'6/19', time:'20:56', num:'第22場', label:'③ 敗部復活路線',
-        note:'第4場得第三，進入敗部復活賽。勝則繼續，再敗則出局！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R3A_27', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R3A_27', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第4場得第三，進入敗部復活賽。再得第四名即淘汰！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R3A_27', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R3A_27', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R3A_27': {
-        date:'6/20', time:'16:20', num:'第27場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R3A_37', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R3A_37', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'16:20', num:'第27場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R3A_37', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R3A_37', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R3A_37': {
-        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R3A_41', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R3A_41', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R3A_41', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R3A_41', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R3A_41': {
-        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_46A', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_46A', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 B：第4場→第四名 → 6/19 20:56 → 28場 ──
-      'L_R4_19': {
+      // ④ A：第4場→4
+      'L_R4_22': {
         date:'6/19', time:'20:56', num:'第22場', label:'④ 敗部復活路線',
-        note:'第4場得第四，進入敗部復活賽。勝則繼續，再敗則出局！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R4_28', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R4_28', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第4場得第四，進入敗部復活賽。再得第四名即淘汰！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R4_28', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R4_28', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R4_28': {
-        date:'6/20', time:'16:28', num:'第28場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R4_37B', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R4_37B', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'16:28', num:'第28場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R4_37B', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R4_37B', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R4_37B': {
-        date:'6/20', time:'20:16', num:'第37場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_R4_42', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_R4_42', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:16', num:'第37場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_R4_42', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_R4_42', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_R4_42': {
-        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_46A', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_46A', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ③ 路線 B（第14場→第三名）──
+      // ③ B：第14場→3
       'L_MR3_27': {
         date:'6/20', time:'16:20', num:'第27場', label:'③ 敗部復活路線',
-        note:'第14場得第三，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR3_37', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR3_37', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第14場得第三，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR3_37', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR3_37', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR3_37': {
-        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR3_41', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR3_41', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR3_41', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR3_41', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR3_41': {
-        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_46A', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_46A', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 C（第14場→第四名）──
+      // ④ B：第14場→4
       'L_MR4_28': {
         date:'6/20', time:'16:28', num:'第28場', label:'④ 敗部復活路線',
-        note:'第14場得第四，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR4_37', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR4_37', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第14場得第四，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR4_37', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR4_37', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR4_37': {
-        date:'6/20', time:'20:16', num:'第37場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR4_42', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR4_42', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:16', num:'第37場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR4_42', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR4_42', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR4_42': {
-        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_46A', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_46A', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_46A', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ③ 路線 C（第32場→第三名 → 6/20 15:48）──
-      'L_MR3_37B': {
+      // ③ C：第32場→3
+      'L_MR3B_25': {
         date:'6/20', time:'15:48', num:'第25場', label:'③ 敗部復活路線',
-        note:'第32場得第三，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR3B_36', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR3B_36', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第32場得第三，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR3B_36', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR3B_36', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR3B_36': {
-        date:'6/20', time:'20:00', num:'第36場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR3B_40', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR3B_40', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:00', num:'第36場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR3B_40', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR3B_40', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR3B_40': {
-        date:'6/21', time:'13:08', num:'第40場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_45', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_45', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:08', num:'第40場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_45', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_45', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 D（第32場→第四名）──
-      'L_MR4_37B': {
+      // ④ C：第32場→4
+      'L_MR4B_25': {
         date:'6/20', time:'15:48', num:'第25場', label:'④ 敗部復活路線',
-        note:'第32場得第四，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR4B_36', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR4B_36', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第32場得第四，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR4B_36', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR4B_36', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR4B_36': {
-        date:'6/20', time:'20:00', num:'第36場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_MR4B_40', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_MR4B_40', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:00', num:'第36場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_MR4B_40', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_MR4B_40', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_MR4B_40': {
-        date:'6/21', time:'13:08', num:'第40場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_45', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_45', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:08', num:'第40場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_45', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_45', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── 準決賽匯合 ──
+      // Semi finals
       'L_SEMI_45': {
         date:'6/21', time:'15:08', num:'第45場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_47', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_47', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_47', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_47', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_SEMI_47': {
         date:'6/21', time:'16:28', num:'第47場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_50', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_50', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_50', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_50', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_SEMI_46A': {
         date:'6/21', time:'15:16', num:'第46場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_48', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_48', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_48', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_48', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_SEMI_48': {
         date:'6/21', time:'16:36', num:'第48場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_50', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_50', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_50', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_50', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'L_SEMI_50': {
         date:'6/21', time:'18:04', num:'第50場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_SEMI_51A', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_SEMI_51A', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_SEMI_51', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_SEMI_51', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-      'L_SEMI_51A': {
+      'L_SEMI_51': {
         date:'6/21', time:'18:44', num:'第51場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'L_FINAL', icon:'1' },
-          { rank:3, label:'第三名',          next:'L_FINAL', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'L_FINAL', icon:'1'},
+          {rank:3, label:'第三名',           next:'L_FINAL', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
       'L_FINAL': {
-        date:'6/21', time:'20:10', num:'第52場', label:'🏆 總決賽', isFinal: true,
-        note:'決賽時刻到了！龍龍龘龘加油！'
+        date:'6/21', time:'20:10', num:'第52場', label:'🏆 總決賽', isFinal:true,
+        note:'龍龖龘 殺進決賽！全力衝冠！'
       },
     }
   },
 
-  // ================================================================
-  //  寓友監護人
-  // ================================================================
   guard: {
     name: '寓友監護人',
     start: 'G_S1',
     nodes: {
-
       'G_S1': {
         date:'6/19', time:'13:00', num:'第1場', label:'起點場次',
-        note:'寓友監護人 出賽開始！', isStart: true,
-        choices: [
-          { rank:1, label:'第一名', next:'G_WIN_12', icon:'1' },
-          { rank:2, label:'第二名', next:'G_WIN_12', icon:'2' },
-          { rank:3, label:'第三名', next:'G_R3_28',  icon:'3' },
-          { rank:4, label:'第四名', next:'G_R4_20',  icon:'4' },
+        note:'寓友監護人 出賽開始！加油！', isStart:true,
+        choices:[
+          {rank:1, label:'第一名', next:'G_WIN_12', icon:'1'},
+          {rank:2, label:'第二名', next:'G_WIN_12', icon:'2'},
+          {rank:3, label:'第三名', next:'G_R3_28',  icon:'3'},
+          {rank:4, label:'第四名', next:'G_R4_20',  icon:'4'},
         ]
       },
-
-      // ── 主路線 ──
       'G_WIN_12': {
         date:'6/19', time:'17:00', num:'第12場', label:'主路線',
-        choices: [
-          { rank:1, label:'第一名', next:'G_WIN_31', icon:'1' },
-          { rank:2, label:'第二名', next:'G_WIN_31', icon:'2' },
-          { rank:3, label:'第三名', next:'G_MR3_23', icon:'3' },
-          { rank:4, label:'第四名', next:'G_MR4_30', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'G_WIN_31', icon:'1'},
+          {rank:2, label:'第二名', next:'G_WIN_31', icon:'2'},
+          {rank:3, label:'第三名', next:'G_MR3_23', icon:'3'},
+          {rank:4, label:'第四名', next:'G_MR4_30', icon:'4'},
         ]
       },
       'G_WIN_31': {
         date:'6/20', time:'17:24', num:'第31場', label:'主路線',
-        choices: [
-          { rank:1, label:'第一名', next:'G_WIN_43', icon:'1' },
-          { rank:2, label:'第二名', next:'G_WIN_43', icon:'2' },
-          { rank:3, label:'第三名', next:'G_MR3_39', icon:'3' },
-          { rank:4, label:'第四名', next:'G_MR4_43B', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'G_WIN_43', icon:'1'},
+          {rank:2, label:'第二名', next:'G_WIN_43', icon:'2'},
+          {rank:3, label:'第三名', next:'G_MR3_39', icon:'3'},
+          {rank:4, label:'第四名', next:'G_MR4_43B',icon:'4'},
         ]
       },
       'G_WIN_43': {
         date:'6/21', time:'13:32', num:'第43場', label:'主路線',
-        choices: [
-          { rank:1, label:'第一名', next:'G_WIN_49', icon:'1' },
-          { rank:2, label:'第二名', next:'G_WIN_49', icon:'2' },
-          { rank:3, label:'第三名', next:'G_SEMI_46', icon:'3' },
-          { rank:4, label:'第四名', next:'G_SEMI_46', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'G_WIN_49',  icon:'1'},
+          {rank:2, label:'第二名', next:'G_WIN_49',  icon:'2'},
+          {rank:3, label:'第三名', next:'G_SEMI_46', icon:'3'},
+          {rank:4, label:'第四名', next:'G_SEMI_46', icon:'4'},
         ]
       },
       'G_WIN_49': {
         date:'6/21', time:'17:24', num:'第49場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名', next:'G_FINAL', icon:'1' },
-          { rank:2, label:'第二名', next:'G_FINAL', icon:'2' },
-          { rank:3, label:'第三名', next:'G_SEMI_51', icon:'3' },
-          { rank:4, label:'第四名', next:'G_SEMI_51', icon:'4' },
+        choices:[
+          {rank:1, label:'第一名', next:'G_FINAL',  icon:'1'},
+          {rank:2, label:'第二名', next:'G_FINAL',  icon:'2'},
+          {rank:3, label:'第三名', next:'G_SEMI_51',icon:'3'},
+          {rank:4, label:'第四名', next:'G_SEMI_51',icon:'4'},
         ]
       },
-
-      // ── ③ 路線 A（第1場→第三名）──
+      // ③ A：第1場→3
       'G_R3_28': {
         date:'6/20', time:'16:28', num:'第28場', label:'③ 敗部復活路線',
-        note:'第1場得第三，進入敗部復活賽！勝則繼續，再敗則出局！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_R3_37', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_R3_37', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第1場得第三，進入敗部復活賽！再得第四名即淘汰！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_R3_37', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_R3_37', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_R3_37': {
-        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_R3_41', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_R3_41', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:16', num:'第37場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_R3_41', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_R3_41', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_R3_41': {
-        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_46', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:16', num:'第41場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_46', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 B（第1場→第四名）──
+      // ④ A：第1場→4
       'G_R4_20': {
         date:'6/19', time:'20:40', num:'第20場', label:'④ 敗部復活路線',
-        note:'第1場得第四，進入敗部復活賽！勝則繼續，再敗則出局！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_R4_24', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_R4_24', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第1場得第四，進入敗部復活賽！再得第四名即淘汰！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_R4_24', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_R4_24', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_R4_24': {
-        date:'6/20', time:'15:56', num:'第24場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_R4_35', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_R4_35', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'15:56', num:'第24場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_R4_35', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_R4_35', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_R4_35': {
-        date:'6/20', time:'20:00', num:'第35場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_R4_39', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_R4_39', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:00', num:'第35場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_R4_39', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_R4_39', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_R4_39': {
-        date:'6/21', time:'13:00', num:'第39場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_45', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:00', num:'第39場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_45', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ③ 路線 C（第12場→第三名）──
+      // ③ B：第12場→3
       'G_MR3_23': {
         date:'6/20', time:'15:48', num:'第23場', label:'③ 敗部復活路線',
-        note:'第12場得第三，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_MR3_35', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_MR3_35', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第12場得第三，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_MR3_35', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_MR3_35', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_MR3_35': {
-        date:'6/20', time:'20:00', num:'第35場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_MR3_39', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_MR3_39', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:00', num:'第35場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_MR3_39', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_MR3_39', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_MR3_39': {
-        date:'6/21', time:'13:00', num:'第39場', label:'③ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_45', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:00', num:'第39場', label:'③ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_45', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 D（第12場→第四名）──
+      // ④ B：第12場→4
       'G_MR4_30': {
         date:'6/20', time:'16:44', num:'第30場', label:'④ 敗部復活路線',
-        note:'第12場得第四，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_MR4_38', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_MR4_38', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第12場得第四，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_MR4_38', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_MR4_38', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_MR4_38': {
-        date:'6/20', time:'20:24', num:'第38場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_MR4_42', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_MR4_42', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/20', time:'20:24', num:'第38場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_MR4_42', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_MR4_42', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_MR4_42': {
-        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_46', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        date:'6/21', time:'13:24', num:'第42場', label:'④ 敗部復活路線', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_46', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ③ 路線 E（第31場→第三名）──
+      // ③ C：第31場→3
       'G_MR3_39': {
         date:'6/21', time:'13:00', num:'第39場', label:'③ 敗部復活路線',
-        note:'第31場得第三，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_45', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第31場得第三，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_45', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_45', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── ④ 路線 F（第31場→第四名）──
+      // ④ C：第31場→4
       'G_MR4_43B': {
         date:'6/21', time:'13:32', num:'第43場', label:'④ 敗部復活路線',
-        note:'第31場得第四，進入敗部復活賽！',
-        isRepechage: true,
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_46', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        note:'第31場得第四，進入敗部復活賽！', isRepechage:true,
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_46', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_46', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
-      // ── 準決賽 ──
+      // Semi
       'G_SEMI_45': {
         date:'6/21', time:'15:08', num:'第45場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_47', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_47', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_47', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_47', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_SEMI_47': {
         date:'6/21', time:'16:28', num:'第47場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_50', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_50', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_50', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_50', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_SEMI_46': {
         date:'6/21', time:'15:16', num:'第46場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_48', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_48', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_48', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_48', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_SEMI_48': {
         date:'6/21', time:'16:36', num:'第48場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_50', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_50', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_50', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_50', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_SEMI_50': {
         date:'6/21', time:'18:04', num:'第50場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_SEMI_51', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_SEMI_51', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_SEMI_51', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_SEMI_51', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
       'G_SEMI_51': {
         date:'6/21', time:'18:44', num:'第51場', label:'準決賽',
-        choices: [
-          { rank:1, label:'第一名 / 第二名', next:'G_FINAL', icon:'1' },
-          { rank:3, label:'第三名',          next:'G_FINAL', icon:'3' },
-          { rank:4, label:'第四名（淘汰）', next:'ELIM', icon:'4', isElim:true },
+        choices:[
+          {rank:1, label:'第一名 / 第二名', next:'G_FINAL', icon:'1'},
+          {rank:3, label:'第三名',           next:'G_FINAL', icon:'3'},
+          {rank:4, label:'第四名（淘汰）',  next:'ELIM', icon:'4', isElim:true},
         ]
       },
-
       'G_FINAL': {
-        date:'6/21', time:'20:10', num:'第52場', label:'🏆 總決賽', isFinal: true,
-        note:'決賽時刻到了！寓友監護人加油！'
+        date:'6/21', time:'20:10', num:'第52場', label:'🏆 總決賽', isFinal:true,
+        note:'寓友監護人 殺進決賽！全力衝冠！'
       },
     }
   }
 };
 
-// ============================================================
-//  STATE
-// ============================================================
+/* ── STATE ── */
 let currentTeam = 'long';
 let currentNodeId = null;
 let history = [];
 
-function getNode(id) {
-  return TEAMS[currentTeam].nodes[id];
-}
+function getNode(id) { return TEAMS[currentTeam].nodes[id]; }
 
-// ============================================================
-//  RENDER
-// ============================================================
+/* ── RENDER ── */
 function render() {
   renderBreadcrumb();
   const app = document.getElementById('app');
 
   if (currentNodeId === 'ELIM') {
     app.innerHTML = `
-      <div class="eliminated-card">
-        <div class="elim-icon">🏳️</div>
-        <div class="elim-title">已淘汰出局</div>
-        <div class="elim-text">敗部復活賽再次得第四名，本屆賽程結束。<br>感謝${TEAMS[currentTeam].name}的拼搏！下次再戰！</div>
-      </div>
-      ${renderHistory()}
-      <button class="reset-btn" onclick="restart()">↩ 重新開始</button>
-    `;
+      <div class="elim-card">
+        <div class="window-pattern">卍</div>
+        <span class="screen-icon">🏳️</span>
+        <div class="screen-title">已淘汰出局</div>
+        <div class="screen-text">
+          敗部復活賽再次得第四名<br>本屆賽程就此結束<br>感謝 ${TEAMS[currentTeam].name} 的全力拼搏！
+        </div>
+        ${renderHistory()}
+        <button class="reset-btn" onclick="restart()">↩ 重新開始</button>
+      </div>`;
     return;
   }
 
@@ -994,156 +996,134 @@ function render() {
 
   if (node.isFinal) {
     app.innerHTML = `
-      <div class="final-celebration">
-        <div class="final-icon">🏆</div>
-        <div class="final-title">殺進決賽！</div>
-        <div style="font-size:1rem;color:var(--gold2);margin-bottom:6px">${node.date} ${node.time}｜${node.num}</div>
-        <div style="font-size:0.85rem;color:var(--muted);line-height:1.7">${node.note || ''}<br>全力以赴，奪取冠軍！🥇</div>
-      </div>
-      ${renderHistory()}
-      <button class="reset-btn" onclick="restart()">↩ 重新開始</button>
-    `;
+      <div class="final-card">
+        <div class="window-pattern">囍</div>
+        <span class="screen-icon">🏆</span>
+        <div class="screen-title">殺進決賽！</div>
+        <div class="screen-text">
+          ${node.date}&ensp;${node.time}&ensp;${node.num}<br><br>
+          ${node.note || ''}<br>全力以赴，奪取冠軍！🥇
+        </div>
+        ${renderHistory()}
+        <button class="reset-btn" onclick="restart()">↩ 重新開始</button>
+      </div>`;
     return;
   }
 
-  // Normal node
-  const isRep = node.isRepechage;
-  const badgeHtml = node.isStart
-    ? `<div class="badge-start">START</div>`
-    : isRep
-      ? `<div class="badge-repechage">⚡ 敗部復活賽</div>`
-      : '';
+  const badgeCls  = node.isStart ? 'badge-start' : node.isRepechage ? 'badge-rep' : node.isFinal ? 'badge-final' : 'badge-normal';
+  const badgeTxt  = node.isStart ? '🚀 起點場次' : node.isRepechage ? '⚡ 敗部復活賽' : node.isFinal ? '🏆 決賽' : '▸ ' + node.label;
+  const cardCls   = node.isStart ? 'start-style' : node.isRepechage ? 'repechage' : node.isFinal ? 'final-style' : '';
+  const cloudChar = node.isRepechage ? '龍' : node.isStart ? '舟' : '賽';
 
   const choicesHtml = node.choices.map(c => {
-    const iconClass = c.isElim ? 'icon-x' : `icon-${c.icon}`;
-    const btnClass = c.isElim ? 'rank-elim' : `rank-${c.rank}`;
-    const nextNode = c.next === 'ELIM' ? null : getNode(c.next);
-    const nextLabel = c.next === 'ELIM'
-      ? '❌ 賽程結束'
-      : nextNode
-        ? `→ ${nextNode.num}（${nextNode.date} ${nextNode.time}）`
-        : '';
+    const btnCls  = c.isElim ? 'rank-elim' : `rank-${c.rank}`;
+    const nextNode = (c.next && c.next !== 'ELIM') ? getNode(c.next) : null;
+    const nextTxt  = c.isElim
+      ? '本屆賽程結束'
+      : nextNode ? `下一場：${nextNode.num}（${nextNode.date} ${nextNode.time}）` : '';
+    const onClick  = c.isElim ? `eliminate()` : `goTo('${c.next}')`;
     return `
-      <button class="choice-btn ${btnClass}" onclick="${c.isElim ? `eliminate()` : `goTo('${c.next}')`}">
-        <div class="rank-icon ${iconClass}">${c.rank === 1 || c.rank === 2 ? c.rank : c.rank}</div>
+      <button class="choice-btn ${btnCls}" onclick="${onClick}">
+        <div class="rank-icon icon-${c.isElim ? 'x' : c.icon}">${c.rank}</div>
         <div class="choice-info">
           <div class="choice-rank">${c.label}</div>
-          <div class="choice-next">${nextLabel}</div>
+          <div class="choice-next">${nextTxt}</div>
         </div>
-        <div class="choice-arrow">${c.isElim ? '💀' : '›'}</div>
-      </button>
-    `;
+        <div class="choice-arrow">${c.isElim ? '✕' : '›'}</div>
+      </button>`;
   }).join('');
 
   app.innerHTML = `
-    <div class="match-card">
-      ${badgeHtml}
-      <div class="match-tag">${node.label}</div>
-      <div class="match-datetime">
-        <div class="match-date">${node.date}</div>
-        <div class="match-time">${node.time}</div>
+    <div class="match-card ${cardCls}">
+      <div class="card-inner">
+        <div class="card-top">
+          <span class="card-badge ${badgeCls}">${badgeTxt}</span>
+          <span class="card-num-label">${node.num}</span>
+        </div>
+        <div class="card-datetime">
+          <span class="card-date">${node.date}</span>
+          <span class="card-time">${node.time}</span>
+        </div>
+        <div class="card-num">${node.label}</div>
+        ${node.note ? `<div class="card-note">${node.note}</div>` : ''}
+        ${node.isRepechage ? `<div class="warning-box">⚠ 敗部復活賽：此場若得第四名即淘汰出局，無法繼續比賽！</div>` : ''}
       </div>
-      <div class="match-num">${node.num}</div>
-      ${node.note ? `<div class="match-note">${node.note}</div>` : ''}
-      ${isRep ? `<div class="warning-box">⚠️ 敗部復活賽：此場若得第四名即淘汰出局，無法繼續比賽！</div>` : ''}
+      <div class="card-cloud">${cloudChar}</div>
     </div>
 
-    <div class="question">比完 ${node.num}，你們得了第幾名？</div>
-    <div class="choices">${choicesHtml}</div>
+    <div class="chinese-divider">
+      <div class="d-line"></div>
+      <span class="d-sym">✦</span>
+      <span class="d-sym" style="font-size:0.7rem;color:var(--ink-l)">比完後選擇名次</span>
+      <span class="d-sym">✦</span>
+      <div class="d-line"></div>
+    </div>
 
+    <div class="choices">${choicesHtml}</div>
     ${history.length > 0 ? renderHistory() : ''}
     ${history.length > 0 ? `<button class="reset-btn" onclick="restart()">↩ 重新開始</button>` : ''}
   `;
 }
 
 function renderHistory() {
-  if (history.length === 0) return '';
-  const rankEmoji = { 1:'🥇', 2:'🥈', 3:'🥉', 4:'💀' };
+  if (!history.length) return '';
+  const em = {1:'🥇',2:'🥈',3:'🥉',4:'💀'};
   const items = history.map(h => `
     <div class="history-item">
-      <div class="history-rank">${rankEmoji[h.rank] || '•'}</div>
+      <div class="history-rank">${em[h.rank]||'·'}</div>
       <div class="history-info">
         <span class="history-match">${h.num}</span>${h.date} ${h.time} — 第${h.rank}名
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
   return `
     <div class="history-section">
-      <div class="history-title">▸ 歷史記錄</div>
+      <div class="history-head">歷史記錄</div>
       <div class="history-list">${items}</div>
-    </div>
-  `;
+    </div>`;
 }
 
 function renderBreadcrumb() {
   const bc = document.getElementById('breadcrumb');
-  if (history.length === 0) { bc.innerHTML = ''; return; }
-  const crumbs = history.map((h, i) => {
-    const isLast = i === history.length - 1;
-    return `<span class="crumb ${isLast ? 'current' : ''}">${h.num}</span>${isLast ? '' : '<span class="crumb-arrow">›</span>'}`;
-  }).join('');
-  bc.innerHTML = crumbs;
+  if (!history.length) { bc.innerHTML=''; return; }
+  bc.innerHTML = history.map((h,i) =>
+    `<span class="crumb ${i===history.length-1?'current':''}">${h.num}</span>${i<history.length-1?'<span class="crumb-arrow">›</span>':''}`
+  ).join('');
 }
 
-// ============================================================
-//  ACTIONS
-// ============================================================
+/* ── ACTIONS ── */
 function goTo(nextId) {
   const node = getNode(currentNodeId);
-  if (!node) return;
-  // Find which choice was made
-  const chosen = node.choices.find(c => c.next === nextId);
-  if (chosen && !chosen.isElim) {
-    history.push({ num: node.num, date: node.date, time: node.time, rank: chosen.rank });
+  if (node) {
+    const c = node.choices.find(x => x.next === nextId);
+    if (c) history.push({num:node.num, date:node.date, time:node.time, rank:c.rank});
   }
   currentNodeId = nextId;
   render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0, behavior:'smooth'});
 }
-
 function eliminate() {
   const node = getNode(currentNodeId);
-  if (node) history.push({ num: node.num, date: node.date, time: node.time, rank: 4 });
+  if (node) history.push({num:node.num, date:node.date, time:node.time, rank:4});
   currentNodeId = 'ELIM';
   render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0, behavior:'smooth'});
 }
-
 function restart() {
   history = [];
   currentNodeId = TEAMS[currentTeam].start;
   render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0, behavior:'smooth'});
 }
-
 function selectTeam(team) {
   currentTeam = team;
   history = [];
   currentNodeId = TEAMS[team].start;
-  document.getElementById('btn-long').classList.toggle('active', team === 'long');
-  document.getElementById('btn-guard').classList.toggle('active', team === 'guard');
+  document.getElementById('btn-long').classList.toggle('active', team==='long');
+  document.getElementById('btn-guard').classList.toggle('active', team==='guard');
   render();
 }
 
-// ============================================================
-//  INIT
-// ============================================================
 selectTeam('long');
-
-// Floating particles
-for (let i = 0; i < 12; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.cssText = `
-    left: ${Math.random()*100}%;
-    width: ${2 + Math.random()*4}px;
-    height: ${2 + Math.random()*4}px;
-    animation-duration: ${8 + Math.random()*12}s;
-    animation-delay: ${Math.random()*10}s;
-    opacity: 0;
-  `;
-  document.body.appendChild(p);
-}
 </script>
 </body>
 </html>
